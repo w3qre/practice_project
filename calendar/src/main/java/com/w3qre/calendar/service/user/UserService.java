@@ -34,7 +34,7 @@ public class UserService {
 		String hashed = passwordEncoder.encode(password);
 		
 		// 3. User Entity 생성 + 저장
-		User user = new User(username, hashed);
+		User user = new User(username, hashed, "ROLE_USER");
 		
 		// 4. DB에 저장 (insert 실행)
 		User saved = userRepository.save(user);

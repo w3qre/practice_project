@@ -31,6 +31,10 @@ public class User {
 	@Column(nullable = false, length = 100)
 	private String password; // BCrypt 保存　（パスワード）
 	
+	// nullable = Null 허용인데 false 니까 NOT NULL
+	@Column(nullable = false, length = 50) // 권한 ROLE_USER
+	private String roles;
+	
 	// 생성, 수정 시간
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
@@ -43,11 +47,18 @@ public class User {
 	}
 	
 	// 회원가입용 생성자=Constructor, id, 시간은 JPA가 처리, 필요한 값만 받도록
-	public User(String username, String password) {
+	public User(String username, String password, String roles) {
 		this.username = username;
 		this.password = password;
-		
+		this.roles = roles;
 	}
+	
+//	// Lombok이 아래 getter기능을 못하고있음 지금 그래서 쓴 getter 
+//	public String getUsername() { return username; }
+//	public String getPassword() { return password; }
+//	public String getRoles() { return roles; }
+//  고쳐서 얜 이제 필요없음
+	
 }
 
 // 한마디로 이 코드는 성적관리 프로그램 거기서 getter/setter 작성하고, this.math = math; 처럼 파라미터값을 필드에 넣는형태

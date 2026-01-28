@@ -8,9 +8,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.w3qre.calendar.security.CustomAuthenticationFailureHandler;
+
 @Configuration
 public class SecurityConfig {
 
+	private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+	
+	public SecurityConfig(CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
+		this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
+	}
 	// 비밀번호를 그대로 평문저장하면 보안위험이 있으니 BCrypt 해시로 저장하는겨
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -20,20 +27,23 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-		http 
-			.csrf(csrf -> csrf.disable()) // (공부용) REST 테스트 편하게 하려고 꺼둠. 나중에 켜도 됨.
+		http.csrf(csrf -> csrf.disable()) // (공부용) REST 테스트 편하게 하려고 꺼둠. 나중에 켜도 됨.
 			.authorizeHttpRequests(auth -> auth
-					.requestMatchers("/api/users/signup").permitAll() // 회원가입 누구나
+					.requestMatchers("/api/users/signup", "/signup", "/login").permitAll() // 회원가입 누구나
 
 					// 로그인 정적자원허용
-					.requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll() 
+					.requestMatchers("/css/**", "/js/**", "/images/**").permitAll() 
 					.anyRequest().authenticated() // 그외 로그인 필요
 				)
 				.formLogin(form -> form
 						.loginPage("/login") // 기본 로그인 페이지
+						.loginProcessingUrl("/login")
+						.failureHandler(customAuthenticationFailureHandler)
+						.defaultSuccessUrl("/", true)
 						.permitAll()
 				)
 				.logout(Customizer.withDefaults());
+		
 		
 		return http.build();
 	}

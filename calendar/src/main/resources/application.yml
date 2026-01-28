@@ -1,7 +1,7 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/calendar_memo?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
-    username: calendar
+    username: calendar # 얘는 DB접속용 계정임 
     password: calendar
     driver-class-name: com.mysql.cj.jdbc.Driver
 

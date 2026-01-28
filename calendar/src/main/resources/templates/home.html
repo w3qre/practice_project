@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Calendar</title>
+  <style>
+    .wrap { display: flex; gap: 16px; padding: 16px; }
+    .main { flex: 1; }
+    .side { width: 280px; border: 1px solid #ddd; border-radius: 10px; padding: 14px; }
+    .nav { display: flex; align-items: center; gap: 10px; justify-content: flex-end; margin-bottom: 10px; }
+    .nav a { text-decoration: none; padding: 6px 10px; border: 1px solid #ddd; border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    th, td { border: 1px solid #e6e6e6; height: 90px; vertical-align: top; padding: 8px; }
+    th { background: #fafafa; height: 40px; }
+    .muted { color: #aaa; }
+    .today { outline: 2px solid #333; border-radius: 6px; padding: 2px 6px; display: inline-block; }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <!-- LEFT: Calendar -->
+  <div class="main">
+    <div class="nav">
+      <a th:href="@{/(ym=${prevYm})}">◀ 前月</a>
+      <a th:href="@{/}">今日</a>
+      <div style="min-width:120px; text-align:center;"
+           th:text="|${currentYm.Year()}年 ${currentYm.MonthValue()}月|"></div>
+      <a th:href="@{/(ym=${nextYm})}">翌月 ▶</a>
+    </div>
+
+    <table>
+      <thead>
+      <tr>
+        <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="week : ${#numbers.sequence(0,5)}">
+        <td th:each="d : ${days.subList(week*7, week*7+7)}">
+          <span
+            th:text="${d.getDayOfMonth()}"
+            th:classappend="(${d.MonthValue() != currentYm.MonthValue())
+            ? ' muted' : '') + (${d.equals(today)} ? ' today' : '')">
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- RIGHT: Sidebar -->
+  <aside class="side">
+    <h2>
+      ようこそ！<span th:text="${username}"></span>様
+    </h2>
+    <p>やることを追加してください。</p>
+
+    <hr>
+
+    <form th:action="@{/logout}" method="post">
+      <button type="submit">ログアウト</button>
+    </form>
+  </aside>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>ログインページ</title>
+</head>
+<body>
+  <h2>ログイン/h2>
+
+  <!-- Spring Security 기본 로그인 처리 URL: /login -->
+  <form method="post" action="/login">
+    <div>
+      <label>ID</label>
+      <input name="username" placeholder="username" />
+    </div>
+    <div>
+      <label>PW</label>
+      <input name="password" type="password" placeholder="password" />
+ 
+    
+    <button type="submit">ログイン</button>
+  </form>
+
+  <p>
+    <a href="/signup">会員登録する</a>
+  </p>
+		<script>
+			  const params = new URLSearchParams(window.location.search);
+			
+			  const error = params.get("error");
+			  if (error) {
+			    alert(decodeURIComponent(error));
+			  }
+			
+			  const success = params.get("success");
+			  if (success) {
+			    alert(decodeURIComponent(success));
+			  }
+		</script>
+
+
+  
+</body>
+</html>

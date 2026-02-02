@@ -2,7 +2,7 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Calendar</title>
+  <title>Calenda Home</title>
   <style>
     .wrap { display: flex; gap: 16px; padding: 16px; }
     .main { flex: 1; }
@@ -22,11 +22,11 @@
   <!-- LEFT: Calendar -->
   <div class="main">
     <div class="nav">
-      <a th:href="@{/(ym=${prevYm})}">◀ 前月</a>
-      <a th:href="@{/}">今日</a>
+      <a th:href="@{/home(ym=${prevYm})}">◀ 前月</a>
+      <a th:href="@{/home}">今日</a>
       <div style="min-width:120px; text-align:center;"
-           th:text="|${currentYm.Year()}年 ${currentYm.MonthValue()}月|"></div>
-      <a th:href="@{/(ym=${nextYm})}">翌月 ▶</a>
+           th:text="|${currentYm.Year}年 ${currentYm.MonthValue}月|"></div>
+      <a th:href="@{/home(ym=${nextYm})}">翌月 ▶</a>
     </div>
 
     <table>
@@ -38,11 +38,11 @@
       <tbody>
       <tr th:each="week : ${#numbers.sequence(0,5)}">
         <td th:each="d : ${days.subList(week*7, week*7+7)}">
-          <span
-            th:text="${d.getDayOfMonth()}"
-            th:classappend="(${d.MonthValue() != currentYm.MonthValue())
-            ? ' muted' : '') + (${d.equals(today)} ? ' today' : '')">
-          </span>
+          <span   
+          	th:text="${d.dayOfMonth}"
+      		th:class="${(d.monthValue != currentYm.monthValue ? 'muted ' : '') + (d.equals(today) ? 'today' : '')}">
+      	  </span>
+
         </td>
       </tr>
       </tbody>

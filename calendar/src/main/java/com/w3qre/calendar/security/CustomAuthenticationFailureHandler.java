@@ -24,16 +24,11 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 			AuthenticationException exception
 			) throws IOException, ServletException {
 	
-		String errorMessage = "ログインに失敗しました。";
-		
-		if (exception instanceof BadCredentialsException) {
-			errorMessage = "入力されたIDは登録されていません。";
-		} else if (exception instanceof BadCredentialsException) {
-			errorMessage = "パスワードが正しくありません。";
-		}
+		String errorMessage = "IDまたはパスワードが正しくありません。";
 		
 		// 일본어때문에
 		String encodedMessage = URLEncoder.encode(errorMessage, StandardCharsets.UTF_8);
+		
 		// 에러 메시지를 쿼리 파라미터로 전달
 		response.sendRedirect("/login?error=" + encodedMessage);
 	}

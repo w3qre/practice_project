@@ -39,7 +39,7 @@ public class SecurityConfig {
 						.loginPage("/login") // 기본 로그인 페이지
 						.loginProcessingUrl("/login")
 						.failureHandler(customAuthenticationFailureHandler)
-						.defaultSuccessUrl("/", true)
+						.defaultSuccessUrl("/home", true)
 						.permitAll()
 				)
 				.logout(Customizer.withDefaults());

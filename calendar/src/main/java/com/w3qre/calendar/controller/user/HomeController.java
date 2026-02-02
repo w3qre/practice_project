@@ -15,10 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HomeController {
 
-	@GetMapping("/")
+	@GetMapping("/home")
 	public String home(
 			@RequestParam(required = false) String ym, // 예: 2026-01
 			Authentication authentication, Model model) {
+		
+//		if ( authentication == null) {
+//			
+//			return "redirect:/home";
+//		}
 		
 		// 로그인한 사용자 = username
 		String username = authentication.getName();

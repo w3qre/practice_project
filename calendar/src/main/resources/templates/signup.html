@@ -2,26 +2,44 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>新規登録ページ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>会員登録</title>
+  <link rel="stylesheet" href="/css/signup.css">
 </head>
+
 <body>
-  <h2>会員登録</h2>
+  <div class="signup-wrap">
+    <main class="signup-card">
+      <header class="signup-head">
+        <h1>会員登録</h1>
+        <p>必要な情報を入力してください</p>
+      </header>
 
-  <!-- 네가 만든 회원가입 컨트롤러 URL로 맞춰야 함 -->
-  <form method="post" action="/signup">
-    <div>
-      <label>ID</label>
-      <input name="username" placeholder="username" />
-    </div>
-    <div>
-      <label>PW</label>
-      <input name="password" type="password" placeholder="password" />
-    </div>
-    <button type="submit">登録する</button>
-  </form>
+      <form class="signup-form" method="post" action="/signup">
+        <div class="field">
+          <label for="username">ID</label>
+          <input id="username" name="username" required />
+        </div>
 
-  <p>
-    <a href="/login">ログインする</a>
-  </p>
+        <div class="field">
+          <label for="password">パスワード</label>
+          <input id="password" name="password" type="password" required />
+        </div>
+
+        <div class="field">
+          <label for="password2">パスワード（確認）</label>
+          <input id="password2" name="passwordConfirm" type="password" required />
+        </div>
+
+        <button class="btn-submit" type="submit">登録する</button>
+      </form>
+
+      <p class="back">
+        <a href="/login">ログイン画面へ戻る</a>
+      </p>
+    </main>
+  </div>
+  <script src="/js/signup.js"></script>
+  
 </body>
 </html>

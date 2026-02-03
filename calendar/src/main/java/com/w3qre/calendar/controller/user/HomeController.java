@@ -46,7 +46,6 @@ public class HomeController {
 		}
 		
 		model.addAttribute("currentYm", currentYm); 
-		System.out.println("DEBUG currentYm=" + currentYm); // 체크용
 		model.addAttribute("prevYm", currentYm.minusMonths(1)); 
 		model.addAttribute("nextYm", currentYm.plusMonths(1)); 
 		model.addAttribute("days", days); 

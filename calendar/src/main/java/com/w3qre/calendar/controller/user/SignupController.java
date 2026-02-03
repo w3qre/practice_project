@@ -20,7 +20,17 @@ public class SignupController {
 	}
 	
 	@PostMapping("/signup")
-	public String signup(@RequestParam String username, @RequestParam String password) {
+	public String signup(
+		@RequestParam String username, 
+		@RequestParam String password,
+		@RequestParam(name = "passwordConfirm") String passwordConfirm)
+	{
+		
+		// 비번 확인 다르면 가입X
+		if (!password.equals(passwordConfirm)) {
+			String err = URLEncoder.encode("パスワードが一致しません。", StandardCharsets.UTF_8);
+			return "redirect:/signup?error=" + err;
+		}
 		
 		// 1. DB에 저장하는 로직
 		userService.signup(username, password);

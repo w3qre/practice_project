@@ -2,67 +2,94 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Calenda Home</title>
-  <style>
-    .wrap { display: flex; gap: 16px; padding: 16px; }
-    .main { flex: 1; }
-    .side { width: 280px; border: 1px solid #ddd; border-radius: 10px; padding: 14px; }
-    .nav { display: flex; align-items: center; gap: 10px; justify-content: flex-end; margin-bottom: 10px; }
-    .nav a { text-decoration: none; padding: 6px 10px; border: 1px solid #ddd; border-radius: 8px; }
-    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-    th, td { border: 1px solid #e6e6e6; height: 90px; vertical-align: top; padding: 8px; }
-    th { background: #fafafa; height: 40px; }
-    .muted { color: #aaa; }
-    .today { outline: 2px solid #333; border-radius: 6px; padding: 2px 6px; display: inline-block; }
-  </style>
+  <title>Calendar Home</title>
+  <link rel="stylesheet" href="/css/home.css">
+
 </head>
-<body>
-
-<div class="wrap">
-  <!-- LEFT: Calendar -->
-  <div class="main">
-    <div class="nav">
-      <a th:href="@{/home(ym=${prevYm})}">◀ 前月</a>
-      <a th:href="@{/home}">今日</a>
-      <div style="min-width:120px; text-align:center;"
-           th:text="|${currentYm.Year}年 ${currentYm.MonthValue}月|"></div>
-      <a th:href="@{/home(ym=${nextYm})}">翌月 ▶</a>
-    </div>
-
-    <table>
-      <thead>
-      <tr>
-        <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="week : ${#numbers.sequence(0,5)}">
-        <td th:each="d : ${days.subList(week*7, week*7+7)}">
-          <span   
-          	th:text="${d.dayOfMonth}"
-      		th:class="${(d.monthValue != currentYm.monthValue ? 'muted ' : '') + (d.equals(today) ? 'today' : '')}">
-      	  </span>
-
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- RIGHT: Sidebar -->
-  <aside class="side">
-    <h2>
-      ようこそ！<span th:text="${username}"></span>様
-    </h2>
-    <p>やることを追加してください。</p>
-
-    <hr>
-
-    <form th:action="@{/logout}" method="post">
-      <button type="submit">ログアウト</button>
-    </form>
-  </aside>
-</div>
-
-</body>
+	<body>
+	
+	<div class="wrap">
+	
+	  <!-- TOP -->
+	  <div class="topbar">
+	    <div class="nav-center">
+	      <a th:href="@{/home(ym=${prevYm})}">◀ 前月</a>
+	      <a th:href="@{/home}">今日</a>
+	      <div class="ym" th:text="|${currentYm.Year}年 ${currentYm.MonthValue}月|"></div>
+	      <a th:href="@{/home(ym=${nextYm})}">翌月 ▶</a>
+	    </div>
+	  </div>
+	
+	  <!-- MIDDLE: Calendar -->
+	  <div class="calendarArea">
+	    <table>
+	      <thead>
+	      <tr>
+	        <th>日</th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th><th>土</th>
+	      </tr>
+	      </thead>
+	      <tbody>
+	      <tr th:each="week : ${#numbers.sequence(0,5)}">
+	        <td th:each="d : ${days.subList(week*7, week*7+7)}"
+	        	class="day-cell"
+	        	th:attr="data-date=${d}">
+	         <div class="day-inner">
+	          <span
+	            th:text="${d.dayOfMonth}"
+	            th:class="${(d.monthValue != currentYm.monthValue ? 'muted ' : '') + (d.equals(today) ? 'today' : '')}">
+	          </span>
+	          
+	          <!-- + 버튼 추가 -->
+	          <button type="button"
+	          		  class="add-btn"
+	          		  th:if="${d.monthValue == currentYm.monthValue}"
+	          		  title="追加">+</button>
+	          		  
+	         <!-- 이 영역이 메모 목록으로 들어감 --> 		  
+	          <div class="todo-preview"></div> 
+	        </div>
+	       </td>
+	      </tr>
+	      </tbody>
+	    </table>
+	  </div>
+	
+	  <!-- BOTTOM: 좌=오늘할일 / 우=사용자정보 -->
+	  <div class="bottom">
+	    <section class="todayBox">
+	      <h3>今日のやること</h3>
+	      <p id="todayTodoBox" class="muted">（ここに今日の予定を表示）</p>
+	    </section>
+	
+	    <aside class="userBox">
+	      <h2>ようこそ！<span th:text="${username}"></span> 様</h2>
+	      <p>やることを追加してください。</p>
+	      <hr>
+	      <form th:action="@{/logout}" method="post">
+	        <button type="submit">ログアウト</button>
+	      </form>
+	    </aside>
+	  </div>
+	
+	</div>
+		<!--  Memo Modal  -->
+		<div id="memoModal" class="modal-backdrop hidden">
+		  <div class="modal">
+		    <div class="modal-title">
+		      <span id="modalDateText">9999-12-31</span> のメモ
+		    </div>
+		
+		    <textarea id="memoText" maxlength="50"
+		              placeholder="やること（最大50文字）"></textarea>
+		
+		    <div class="modal-actions">
+		      <button type="button" id="btnCancel">キャンセル</button>
+		      <button type="button" id="btnSave">登録</button>
+		    </div>
+		  </div>
+		</div>
+		
+		<script src="/js/home.js"></script>
+		
+	</body>
 </html>

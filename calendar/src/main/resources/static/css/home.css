@@ -43,9 +43,8 @@ th { background: #fafafa; height: 40px; }
 /* 하단 레이아웃 */
 .bottom{
   display: flex;
-  justify-content: space-between;
   gap: 16px;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .todayBox{
@@ -60,10 +59,12 @@ th { background: #fafafa; height: 40px; }
 /* 우측 사용자 카드 */
 .userBox{
   width: 320px;
-  margin-left: auto;
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 14px;
+  box-sizing: border-box;
+  height: auto;
+  align-self: stretch;
 }
 
 .userBox hr{

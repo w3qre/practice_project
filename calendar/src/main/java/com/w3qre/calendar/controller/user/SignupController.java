@@ -32,13 +32,20 @@ public class SignupController {
 			return "redirect:/signup?error=" + err;
 		}
 		
+	try {
 		// 1. DB에 저장하는 로직
 		userService.signup(username, password);
 		
 		// 2. 성공 메시지 ( 인코딩하깅 )
 		String msg = URLEncoder.encode("新規登録が完了しました。", StandardCharsets.UTF_8);
-		
+	
 		// 3. 가입 후 로그인 페이지로 이동 + success param
 		return "redirect:/login?success=" + msg;
+	
+		} catch (IllegalArgumentException e) {
+		// 중복 ID 검증
+		String err = URLEncoder.encode(e.getMessage(), StandardCharsets.UTF_8);
+		return "redirect:/signup?error=" + err;
+		}
 	}
 }

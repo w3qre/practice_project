@@ -62,16 +62,25 @@
 	    </section>
 	
 	    <aside class="userBox">
-	      <h2>ようこそ！<span th:text="${username}"></span> 様</h2>
-	      <p>やることを追加してください。</p>
-	      <hr>
-	      <form th:action="@{/logout}" method="post">
-	        <button type="submit">ログアウト</button>
-	      </form>
-	    </aside>
+		  <div class="accountTop">
+			  <h2 class="accountTitle">
+			  	 ようこそ！<span class="accountName" th:text="${username}"></span> 様
+			  </h2>
+			    <a class="accountMyPage" href="/mypage">マイページ</a>
+			  </div>
+			  <p class="accountSub">やることを追加してください。</p>
+			  <hr>
+			
+			  <div class="accountActions">
+			    <form th:action="@{/logout}" method="post">
+			      <button class="accountLogout" type="submit">ログアウト</button>
+			    </form>
+			  </div>
+		</aside>
+
+
 	  </div>
-	
-	</div>
+	  
 		<!--  Memo Modal  -->
 		<div id="memoModal" class="modal-backdrop hidden">
 		  <div class="modal">
@@ -87,9 +96,8 @@
 		      <button type="button" id="btnSave">登録</button>
 		    </div>
 		  </div>
-		</div>
+		</div>	
 		
-		<script src="/js/home.js"></script>
-		
+		<script src="/js/home.js"></script>	
 	</body>
 </html>

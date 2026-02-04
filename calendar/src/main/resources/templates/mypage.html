@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>My Page</title>
+  <link rel="stylesheet" href="/css/mypage.css">
+</head>
+<body>
+  <div class="mp-wrap">
+
+    <div class="mp-head">
+      <div class="mp-title">マイページ</div>
+      <div class="mp-user">ID: <span th:text="${username}"></span></div>
+      <a class="mp-back" href="/home">← 戻る</a>
+    </div>
+
+    <!-- 비밀번호 변경 -->
+    <section class="mp-card">
+      <div class="mp-card-title">パスワード変更</div>
+
+      <form th:action="@{/mypage/password}" method="post" class="mp-form">
+        <label>現在のパスワード</label>
+        <input type="password" name="currentPassword" required>
+
+        <label>新しいパスワード</label>
+        <input type="password" name="newPassword" required>
+
+        <label>新しいパスワード（確認）</label>
+        <input type="password" name="newPasswordConfirm" required>
+
+        <button type="submit" class="mp-btn">変更する</button>
+      </form>
+    </section>
+
+    <!-- 회원탈퇴 -->
+    <section class="mp-card">
+      <div class="mp-card-title">退会</div>
+      <div class="mp-desc">退会するとログインできなくなります。</div>
+
+      <form th:action="@{/mypage/withdraw}" method="post"
+            onsubmit="return confirm('本当に退会しますか？');">
+        <button type="submit" class="mp-btn danger">退会する</button>
+      </form>
+    </section>
+
+    <script th:if="${param.pw}">
+      alert('パスワードを変更しました。');
+    </script>
+
+  </div>
+</body>
+</html>

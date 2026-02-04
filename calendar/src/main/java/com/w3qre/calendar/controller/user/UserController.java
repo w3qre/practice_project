@@ -1,12 +1,17 @@
 package com.w3qre.calendar.controller.user;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.w3qre.calendar.service.user.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController // JSON을 반환  > @Controller는 HTML 반환하는 것 : ex)Thymeleaf
 @RequestMapping("/api/users") // 이 컨트롤러의 기본 URL prefix -> 공통 URL 앞부분 만들기 그래서 /api/users/signup이 기본 url이됨
@@ -35,6 +40,23 @@ public class UserController {
 		public void setUsername(String username) { this.username = username; } // JSON 바인딩용 setter
 		public void setPassword(String password) { this.password = password; } // JSON 바인딩용 setter
 	}
+	
+	@PostMapping("/user/withdraw")
+	public String withdraw(
+			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal, 
+			HttpServletRequest request,
+			HttpServletResponse response
+	) {
+		userService.withdrawByUsername(principal.getUsername());
+		
+		// 세션/인증 제거 = 즉시 로그아웃
+		new SecurityContextLogoutHandler().logout(request, response, null);
+		
+		return "redirect:/login?withdraw";
+		
+	}
+		
+	
 
 }
 

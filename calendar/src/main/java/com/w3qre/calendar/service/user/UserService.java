@@ -1,12 +1,16 @@
 package com.w3qre.calendar.service.user;
 
+import java.time.LocalDateTime;
+
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.w3qre.calendar.domain.user.User;
 import com.w3qre.calendar.repository.user.UserRepository;
 
-import jakarta.transaction.Transactional;
+
 
 @Service // Spring에 service담당 이라고 선언하는것
 @Transactional // 메서드 실행 중 오류 발생시 DB 작업 전체 롤백
@@ -42,6 +46,41 @@ public class UserService {
 		// 저장된 사용자 id 반환
 		return saved.getId();
 	}
+	
+	// 회원탈퇴 기능 메소드
+	public void withdrawByUsername(String username) {
+	    User user = userRepository.findByUsername(username)
+	            .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+
+	    user.setDeleted(true);
+	    user.setDeletedAt(LocalDateTime.now());
+
+	    userRepository.save(user);
+	}
+	
+	public void changePassword(String username, String currentPassword, String newPassword, String newPasswordConfirm) {
+		
+		if (!newPassword.equals(newPasswordConfirm)) {
+			throw new IllegalArgumentException("新しいパスワードが一致しません。");
+		}
+		
+		if (newPassword.length() < 6) {
+			throw new IllegalArgumentException("パスワードは6文字以上で入力してください。");
+		}
+		
+		User user = userRepository.findByUsername(username)
+				.orElseThrow(() -> new IllegalArgumentException("User not found: " + username));
+
+		// 현재 비번 검증
+		if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+			throw new IllegalArgumentException("現在のパスワードが正しくありません。");
+		}
+		
+		// 변경비번 저장
+		user.setPassword(passwordEncoder.encode(newPassword));
+		userRepository.save(user);
+	}
+
 	
 }
 

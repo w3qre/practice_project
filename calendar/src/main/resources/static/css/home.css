@@ -1,110 +1,215 @@
 @charset "UTF-8";
 
-    .wrap { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; padding: 16px; }
-    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-    th, td { border: 1px solid #e6e6e6; height: 90px; vertical-align: top; padding: 8px; }
-    th { background: #fafafa; height: 40px; }
-    .muted { color: #aaa; }
-    .today { outline: 2px solid #333; border-radius: 6px; padding: 2px 6px; display: inline-block; }
-    /* 헤더 전체 */
-	.topbar { position: relative;  height: 60px; }
-	/* 버튼 그룹만 정가운데 고정 */
-	.nav-center {
-	  position: absolute;
-	  left: 50%;
-	  transform: translateX(-50%);
-	  display: flex;
-	  gap: 10px;
-	  align-items: center; }
-	.ym {
-	  min-width:120px;
-	  text-align:center;
-	  font-weight:600; }
-	.nav-center a{
-	  text-decoration:none;
-	  padding:6px 10px;
-	  border:1px solid #ddd;
-	  border-radius:8px;
-	  background:#fff; }
-   .calendarArea{
-	  width:100%;
-	  max-width:1200px;
-	  margin:0 auto; }  /* 가운데 정렬 */
-   .bottom{
-	  display: flex;
-	  justify-content: space-between; /* ✅ 좌/우 끝으로 벌림 */
-	  gap: 16px;
-	  align-items: flex-start; }
-   .todayBox{
-	  flex: 1;                 /* ✅ 남는 공간 전부 먹기(좌측) */
-	  border: 1px solid #ddd;
-	  border-radius: 10px;
-	  padding: 14px;
-	  min-height: 140px; }
-    .userBox{
-	  width: 320px;            /* ✅ 우측 박스 고정 폭 */
-	  margin-left: auto;       /* ✅ 혹시 space-between 안 먹어도 오른쪽 붙음(보험) */
-	  border: 1px solid #ddd;
-	  border-radius: 10px;
-	  padding: 14px; } 
-	.day-cell {
-	  padding : 0;} 
-	.day-inner {
-	  position : relative;
-	  height : 72px;          /* 달력 높이 맞춰 조절하기 */
-	  padding : 8px; }
-	.add-btn {
-	  position : absolute;
-	  top : 6px;
-	  right : 6px;
-	  width : 22px;
-	  height : 22px;
-	  border-radius : 6px;
-	  border : 1px solid #ddd;
-	  background : #fff;
-	  cursor : pointer;
-	  line-height : 18px; } 
-	.todo-preview {		/* 메모 표시 */
-	  margin-top : 6px;
-	  font-size : 12px;
-	  line-height : 1.2; }
-	.todo-line {		/* 너무길면 ... 처리 */
-	  white-space : nowrap;
-	  overflow : hidden;
-	  text-overflow : ellipsis; }
-	.todo-more {		/* 메모 여러개이면 2줄만 보여주고 나머지 ... 처리 */
-	  color : #777; } 
-	.modal-backdrop{
-	  position: fixed;
-	  inset: 0;
-	  background: rgba(0,0,0,0.25);
-	  display:flex;
-	  align-items:center;
-	  justify-content:center;
-	  z-index: 9999; }
-	.modal{
-	  width: 340px;
-	  max-width : 90vw;
-	  background:#fff;
-	  border-radius: 12px;
-	  padding: 14px;
-	  box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-	.modal-title{
-	  font-weight: 700;
-	  margin-bottom: 10px; }
-	#memoText{
-	  width:100%;
-	  box-sizing : border-box;
-	  height: 120px;
-	  resize: none;
-	  padding: 10px;
-	  border: 1px solid #ddd;
-	  border-radius: 10px;
-	  outline: none; }
-	.modal-actions{
-	  margin-top: 10px;
-	  display:flex;
-	  justify-content:flex-end;
-	  gap: 8px; }
-	.modal-backdrop.hidden { 
-	  display: none; }
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+}
+
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+th, td { border: 1px solid #e6e6e6; height: 90px; vertical-align: top; padding: 8px; }
+th { background: #fafafa; height: 40px; }
+
+.muted { color: #aaa; }
+.today { outline: 2px solid #333; border-radius: 6px; padding: 2px 6px; display: inline-block; }
+
+/* 헤더 */
+.topbar { position: relative; height: 60px; }
+
+.nav-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.ym { min-width: 120px; text-align: center; font-weight: 600; }
+
+.nav-center a{
+  text-decoration: none;
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.calendarArea { width: 100%; max-width: 1200px; margin: 0 auto; }
+
+/* 하단 레이아웃 */
+.bottom{
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.todayBox{
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 14px;
+  min-height: 140px;
+  color: #000;
+}
+
+/* 우측 사용자 카드 */
+.userBox{
+  width: 320px;
+  margin-left: auto;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.userBox hr{
+  border: none;
+  border-top: 1px solid #e8e8e8;
+  margin: 10px 0;
+}
+
+/* 마이페이지 아래 로그아웃 */
+.accountTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.accountTitle{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color:#000;
+}
+
+.accountName{
+  font-weight: 900;
+}
+
+.accountMyPage{
+  font-size: 13px;
+  font-weight: 700;
+  color:#666;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  white-space: nowrap;
+}
+
+.accountMyPage:hover{
+  color:#000;
+  border-color:#ccc;
+}
+
+.accountSub{
+  margin: 0;
+  font-size: 13px;
+  color:#333;
+  line-height: 1.4;
+}
+
+.accountActions{
+  padding-top: 10px;
+}
+
+.accountLogout{
+  width: 110px;
+  border: 1px solid #bdbdbd;
+  background: #fff;
+  color:#111;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.accountLogout:hover{
+  border-color:#000;
+}
+
+/* 달력 셀 */
+.day-cell { padding: 0; }
+
+.day-inner {
+  position: relative;
+  height: 72px;
+  padding: 8px;
+}
+
+.add-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  line-height: 18px;
+}
+
+/* 메모 표시 */
+.todo-preview {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.todo-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.todo-more { color: #777; }
+
+/* 모달 */
+.modal-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index: 9999;
+}
+
+.modal{
+  width: 340px;
+  max-width: 90vw;
+  background:#fff;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.modal-title{ font-weight: 700; margin-bottom: 10px; }
+
+#memoText{
+  width: 100%;
+  box-sizing: border-box;
+  height: 120px;
+  resize: none;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  outline: none;
+}
+
+.modal-actions{
+  margin-top: 10px;
+  display:flex;
+  justify-content:flex-end;
+  gap: 8px;
+}
+
+.modal-backdrop.hidden{ display: none; }

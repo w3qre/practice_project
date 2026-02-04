@@ -35,9 +35,13 @@ public class User {
 	@Column(nullable = false, length = 50) // 권한 ROLE_USER
 	private String roles;
 	
-	// 생성, 수정 시간
+	@Column(nullable = false)
+	private boolean deleted = false; // 회원탍최 ( 소프트삭제 )
+	
+	// 생성, 수정, 탈퇴 시간
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
+	private LocalDateTime deletedAt;
 	
 	// 처음 저장되기직전 자동 실행, insert 시점에 시간 자동세팅
 	@PrePersist
@@ -53,11 +57,19 @@ public class User {
 		this.roles = roles;
 	}
 	
-//	// Lombok이 아래 getter기능을 못하고있음 지금 그래서 쓴 getter 
-//	public String getUsername() { return username; }
-//	public String getPassword() { return password; }
-//	public String getRoles() { return roles; }
-//  고쳐서 얜 이제 필요없음
+	// 소프트삭제용 setter
+	public void setDeleted(boolean deleted) {
+	    this.deleted = deleted;	}
+
+	public void setDeletedAt(LocalDateTime deletedAt) {
+	    this.deletedAt = deletedAt;	}
+
+	public boolean isDeleted() {
+	    return deleted; }
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	
 }
 

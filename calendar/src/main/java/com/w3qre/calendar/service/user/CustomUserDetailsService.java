@@ -38,6 +38,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 					.map(SimpleGrantedAuthority::new)
 					.toList()
 			)
+			.disabled(user.isDeleted())
 			.build();
 	}
+
 }

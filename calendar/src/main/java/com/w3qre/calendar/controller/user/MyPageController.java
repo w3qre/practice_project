@@ -25,9 +25,11 @@ public class MyPageController {
 	@GetMapping("/mypage")
 	public String mypage(
 			@AuthenticationPrincipal org.springframework.security.core.userdetails.User principal,
+			@RequestParam(value = "pw" , required = false) String pw,
 			Model model)
 	{
 		model.addAttribute("username", principal.getUsername());
+		model.addAttribute("pw" , pw);
 		return "mypage";
 	}
 	

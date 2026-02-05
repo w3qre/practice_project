@@ -5,7 +5,7 @@
   <title>My Page</title>
   <link rel="stylesheet" href="/css/mypage.css">
 </head>
-<body>
+<body th:data-pw="${pw}">
   <div class="mp-wrap">
 
     <div class="mp-head">
@@ -18,12 +18,13 @@
     <section class="mp-card">
       <div class="mp-card-title">パスワード変更</div>
 
-      <form th:action="@{/mypage/password}" method="post" class="mp-form">
+      <form th:action="@{/mypage/password}" method="post" 
+      		class="mp-form" id="pwForm">
         <label>現在のパスワード</label>
         <input type="password" name="currentPassword" required>
 
         <label>新しいパスワード</label>
-        <input type="password" name="newPassword" required>
+        <input type="password" name="newPassword" id="newPassword" required>
 
         <label>新しいパスワード（確認）</label>
         <input type="password" name="newPasswordConfirm" required>
@@ -43,10 +44,7 @@
       </form>
     </section>
 
-    <script th:if="${param.pw}">
-      alert('パスワードを変更しました。');
-    </script>
-
   </div>
+  <script th:src="@{/js/mypage.js}"></script>
 </body>
 </html>
